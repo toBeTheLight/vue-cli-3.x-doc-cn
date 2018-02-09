@@ -46,7 +46,7 @@ vue create my-project
 
 ## CLI服务
 
-`@vue/cli-service`是在每个由`@vue/cli`创建的每格项目中本地安装的依赖项。它包含了加载其他插件的核心服务，为你的项目提供`vue-cli-service` binary文件。如果你熟悉[create-react-app](https://github.com/facebookincubator/create-react-app)的话，`@vue/cli-service`本质上相当于`react-scripts`，但是更灵活。
+`@vue/cli-service`是在每个由`@vue/cli`创建的每个项目中本地安装的依赖项。它包含了加载其他插件的核心服务，为你的项目提供`vue-cli-service` binary文件。如果你熟悉[create-react-app](https://github.com/facebookincubator/create-react-app)的话，`@vue/cli-service`本质上相当于`react-scripts`，但是更灵活。
 
 查看全部可用命令参阅[CLI服务文档](./cli-service.md)。
 

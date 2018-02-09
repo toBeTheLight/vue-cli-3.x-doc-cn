@@ -16,7 +16,7 @@ yarn global add @vue/cli
 vue create my-project
 ```
 
-有关常见任务的详细指南和么中插件的详细用法，请参阅[完整的文档](./zh-cn/README.md)。
+有关常见任务的详细指南和每种插件的详细用法，请参阅[完整的文档](./zh-cn/README.md)。
 
 ## 贡献
 
