@@ -46,7 +46,7 @@ vue create my-project
 
 ## CLI服务
 
-`@vue/cli-service`是在每个由`@vue/cli`创建的每格项目中本地安装的依赖项。它包含了加载其他插件的核心服务，为你的项目提供`vue-cli-service`二进制文件。如果你熟悉[create-react-app](https://github.com/facebookincubator/create-react-app)的话，`@vue/cli-service`本质上相当于`react-scripts`，但是更灵活。
+`@vue/cli-service`是在每个由`@vue/cli`创建的每格项目中本地安装的依赖项。它包含了加载其他插件的核心服务，为你的项目提供`vue-cli-service` binary文件。如果你熟悉[create-react-app](https://github.com/facebookincubator/create-react-app)的话，`@vue/cli-service`本质上相当于`react-scripts`，但是更灵活。
 
 查看全部可用命令参阅[CLI服务文档](./cli-service.md)。
 
@@ -82,7 +82,7 @@ Vue CLI全面支持了指定不同的环境变量使用模式和`.env`。
 
 使用`vue create`创建的项目开箱即用。插件被设计为可以彼此协作，因此大多数情况下，你只需要在交互命令下选取你需要的功能即可。
 
-不过我们也明白迎合每一种可能的需求是不可能的，而且项目的需求也可能随时发生变化。由Vue CLI创建的项目也允许你配置工具的几乎所有方面。
+不过我们也明白迎合每一种可能的需求是不可能的，而且项目的需求也可能随时发生变化。由Vue CLI创建的项目也允许你配置工具的几乎所有方面，而不需要eject。
 
 ### vue.config.js
 
