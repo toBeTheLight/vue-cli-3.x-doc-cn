@@ -1,13 +1,13 @@
-## Configuring webpack
+## 配置webpack
 
-- [Basic Configuration](#basic-configuration)
-- [Chaining](#chaining-advanced)
-- [Inspecting the Config](#inspecting-the-projects-webpack-config)
-- [Using Resolved Config as a File](#using-resolved-config-as-a-file)
+- [基本配置](#基本配置)
+- [链式](#链式)
+- [检查项目的webpack配置](#检查项目的webpack配置)
+- [作为文件使用已解析配置](#作为文件使用已解析配置)
 
-### Basic Configuration
+### 基本配置
 
-The easiest way to tweak the webpack config is provide an object to the `configureWebpack` option in `vue.config.js`:
+调整webpack配置最简单的方法是在`vue.config.js`文件中为`configureWebpack`选项提供一个对象：
 
 ``` js
 // vue.config.js
@@ -20,9 +20,9 @@ module.exports = {
 }
 ```
 
-The object will be merged into the final webpack config using [webpack-merge](https://github.com/survivejs/webpack-merge).
+这个对象会被[webpack-merge](https://github.com/survivejs/webpack-merge)合并进最终的webpack配置。
 
-If you need conditional behavior based on the environment, or want to directly mutate the config, use a function (which will be lazy evaluated after the env variables are set). The function receives the resolved config as the argument. Inside the function, you can either mutate the config directly, OR return an object which will be merged:
+如果你需要基于环境的条件行为，或者想要直接改变配置，可以使用一个函数（在env变量设置之后会被延迟计算）。该函数接受已解析的配置作为参数。在函数内，你可以直接改变配置，或者返回一个会被合并的对象：
 
 ``` js
 // vue.config.js
@@ -37,15 +37,17 @@ module.exports = {
 }
 ```
 
-### Chaining (Advanced)
+### 链式
 
-The internal webpack config is maintained using [webpack-chain](https://github.com/mozilla-neutrino/webpack-chain). The library provides an abstraction over the raw webpack config, with the ability to define named loader rules and named plugins, and later "tap" into those rules and modify their options.
+*高级*
 
-This allows us finer-grained control over the internal config. Here are some examples:
+内部的webpack配置使用[webpack-chain](https://github.com/mozilla-neutrino/webpack-chain)维护。这个库提供了对原始webpack配置的抽象，这种用法下，能够定义指定的loader规则和指定的插件，并且能够在之后“tap”进入这些规则并修改其选项。
 
-#### Transpiling a Dependency Module
+这允许我们对内部配置进行细粒度的控制，这有些例子：
 
-By default the Babel configuration skips
+#### 转译一个依赖模块
+
+默认情况下，Babel配置跳过
 
 ``` js
 // vue.config.js
@@ -59,7 +61,7 @@ module.exports = {
 }
 ```
 
-#### Modifying Plugin Options
+#### 修改插件选项
 
 ``` js
 // vue.config.js
@@ -68,41 +70,41 @@ module.exports = {
     config
       .plugin('html')
       .tap(args => {
-        return [/* new args to pass to html-webpack-plugin's constructor */]
+        return [/* 传入html-webpack-plugin's构造函数的新参数 */]
       })
   }
 }
 ```
 
-You will need to familiarize yourself with [webpack-chain's API](https://github.com/mozilla-neutrino/webpack-chain#getting-started) and [read some source code](https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-service/lib/config) in order to understand how to leverage the full power of this option, but it gives you a more expressive and safer way to modify the webpack config than directly mutation values.
+你需要熟悉[webpack-chain的 API](https://github.com/mozilla-neutrino/webpack-chain#getting-started)并且要[读一些源代码](https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-service/lib/config)以便了解如何去充分利用此选项，不过它为你提供了相比直接了当的修改更直观更安全的方式来修改webpack配置。
 
-### Inspecting the Project's Webpack Config
+### 检查项目的webpack配置
 
-Since `@vue/cli-service` abstracts away the webpack config, it may be more difficult to understand what is included in the config, especially when you are trying to make tweaks yourself.
+由于`@vue/cli-service`抽象除了webpack配置，可能会使你更难理解配置中有什么，特别在你自己尝试调整的时候。
 
-`vue-cli-service` exposes the `inspect` command for inspecting the resolved webpack config. The global `vue` binary also provides the `inspect` command, and it simply proxies to `vue-cli-service inspect` in your project.
+`vue-cli-service`暴露了`inspect`命令用来检查已解析的webpack配置。全局的`vue` binary也提供了`inspect`命令，它只是代理项目中的`vue-cli-service inspect`。
 
-The command prints to stdout by default, so you can redirect that into a file for easier inspection:
+这个命令会默认输出到stdout，所以你也可以将其重定向到一个文件以便于检查：
 
 ``` sh
 vue inspect > output.js
 ```
 
-Note the output is not a valid webpack config file, it's a serialized format only meant for inspection.
+注意，输出内容不是个可用的webpack配置文件，它只是个用于检查的序列化格式。
 
-You can also inspect a certain path of the config to narrow it down:
+你还可以只检查配置的某些路径，用以缩小范围：
 
 ``` sh
-# only inspect the first rule
+# 只检查第一条规则
 vue inspect module.rules.0
 ```
 
-### Using Resolved Config as a File
+### 作为文件使用已解析配置
 
-Some external tools may need access to the resolved webpack config as a file, for example IDEs or command line tools that expects a webpack config path. In that case you can use the following path:
+一些外部工具可能需要以文件形式访问已经解析的配置文件，例如，需要webpack配置的IDE或者命令行工具。这种情况下，你可以使用下方的路径：
 
 ```
 <projectRoot>/node_modules/@vue/cli-service/webpack.config.js
 ```
 
-This file dynamically resolves and exports the exact same webpack config used in `vue-cli-service` commands, including those from plugins and even your custom configurations.
+该文件动态解析，并且导出`vue-cli-service`命令行使用的完全相同的配置，包含来自插件的和自定义的配置。
