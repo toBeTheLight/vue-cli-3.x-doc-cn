@@ -110,8 +110,8 @@ Options:
 
 #### 缓存和并行模式
 
-- 默认启动了Babel/TypeScript转义的`cache-laoder`。
-- 当有多个CPU内核时，将启用`thread-loader`进行Babel/TypeScript的转义。
+- 默认启动了Babel/TypeScript转译的`cache-laoder`。
+- 当有多个CPU内核时，将启用`thread-loader`进行Babel/TypeScript的转译。
 
 #### 构建为库或Web组件
 
