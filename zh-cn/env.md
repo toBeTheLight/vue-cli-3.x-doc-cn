@@ -1,59 +1,59 @@
-## Environment Variables and Modes
+## 环境变量和模式
 
-- [Overview](#overview)
-- [Modes](#modes)
-- [Using Env Variables in Client-side Code](#using-env-variables-in-client-side-code)
-- [Local Only Variables](#local-only-variables)
+- [概览](#概览)
+- [模式](#模式)
+- [在客户端代码中使用环境变量](#在客户端代码中使用环境变量)
+- [本地变量](#本地变量)
 
-### Overview
+### 概览
 
-You can specify env variables by placing the following files in your project root:
+你可以通过将下方文件放入项目的根路径来指定env变量：
 
 ``` sh
-.env                # loaded in all cases
-.env.local          # loaded in all cases, ignored by git
-.env.[mode]         # only loaded in specified mode
-.env.[mode].local   # only loaded in specified mode, ignored by git
+.env                # 在所有情况下加载s
+.env.local          # 在所有情况下加载，被git忽略
+.env.[mode]         # 只在指定模式下加载
+.env.[mode].local   # 只在指定模式下加载，被git忽略
 ```
 
-An env file simply contains key=value pairs of environment variables:
+env文件只包含环境变量的键值对：
 
 ```
 FOO=bar
 VUE_APP_SECRET=secret
 ```
 
-Loaded variables will become available to all `vue-cli-service` commands, plugins and dependencies.
+加载的变量可用于所有的`vue-cli-service`命令，插件和依赖项。
 
-### Modes
+### 模式
 
-**Mode** is an important concept in Vue CLI projects. By default, there are three modes in a Vue CLI project:
+**Mode**时Vue CLI的重要概念。默认情况下，Vue CLI项目中有三种模式：
 
-- `development` is used by `vue-cli-service serve`
-- `production` is used by `vue-cli-service build`
-- `test` is used by `vue-cli-service test`
+- `vue-cli-service serve`使用`development`
+- `vue-cli-service build`使用`production`
+- `vue-cli-service test`使用`test`
 
-Note that a mode is different from `NODE_ENV`, as a mode can contain multiple environment variables. That said, each mode does set `NODE_ENV` to the same value by default - for example, `NODE_ENV` will be set to `"development"` in development mode.
+注意，模式和`NODE_ENV`是不同的，模式可以包含不同的环境变量。意味着，每种模式下默认情况会将`NODE_ENV`设置为相同的值。例如，`NODE_ENV`在开发模式下会被设置为`"development"`。
 
-You can set environment variables only available to a certain mode by postfixing the `.env` file. For example, if you create a file named `.env.development` in your project root, then the variables declared in that file will only be loaded in development mode.
+你可以通过带有`.env`后缀的文件来设置环境变量只在特定模式下有效。比如，如果你在项目根路径下创建了`.env.development`文件，那么在这个文件中声明的变量将只会在开发模式下加载。
 
-### Using Env Variables in Client-side Code
+### 在客户端代码中使用环境变量
 
-Only variables that start with `VUE_APP_` will be statically embedded into the client bundle with `webpack.DefinePlugin`. You can access them in your application code:
+只有以`VUE_APP_`开头的变量才会静态的嵌入到带有`webpack.DefinePlugin`的客户端代码中。你可以在应用程序中像这样使用它。
 
 ``` js
 console.log(process.env.VUE_APP_SECRET)
 ```
 
-During build, `process.env.VUE_APP_SECRET` will be replaced by the corresponding value. In the case of `VUE_APP_SECRET=secret`, it will be replaced by `"secret"`.
+在构建过程中，`process.env.VUE_APP_SECRET`会被替换为相应的值。例如，在`VUE_APP_SECRET=secret`的情况下，会被`"secret"`替换。
 
-In addition to `VUE_APP_*` variables, there are also two special variables that will always be available in your app code:
+除了`VUE_APP_*`变量，还有两个特殊的变量，这两个变量在应用代码中总是可用的。
 
-- `NODE_ENV` - this will be one of `"development"`, `"production"` or `"test"` depending on the [mode](#modes) the app is running in.
-- `BASE_URL` - this corresponds to the `baseUrl` option in `vue.config.js` and is the base path your app is deployed at.
+- `NODE_ENV` - 这个值会是`"development"`，`"production"`或`"test"`中的一个，依赖于应用正在运行的[模式](#模式)。
+- `BASE_URL` - 对应于`vue.config.js`中的`baseUrl`选项，时项目部署的基本路径（base path）。
 
-### Local Only Variables
+### 本地变量
 
-Sometimes you might have env variables that should not be committed into the codebase, especially if your project is hosted in a public repository. In that case you should use an `.env.local` file instead. Local env files are ignored in `.gitignore` by default.
+有时，你可能有一些不该提交到代码库中的变量，特别是你的项目托管在公共仓库。这种情况下你应该使用`.env.local`文件。本地env文件在`.gitignore`中默认忽略。
 
-`.local` can also be appended to mode-specific env files, for example `.env.development.local` will be loaded during development, and is ignored by git.
+`.local`也可以添加到特定模式的env文件，例如，`.env.development.local`将在开发模式中加载，并且被git忽略。
