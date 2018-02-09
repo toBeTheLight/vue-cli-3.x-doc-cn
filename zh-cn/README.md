@@ -1,91 +1,94 @@
 ## Table of Contents
 
-- [Introduction](#introduction)
+- [简介](#简介)
 - [CLI](#cli)
-- [CLI Service](#cli-service)
-- [Conventions](#conventions)
-  - [The Index Page](#the-index-page)
-  - [Static Assets Handling](#static-assets-handling)
-  - [Environment Variables and Modes](#environment-variables-and-modes)
-- [Configuration](#configuration)
+- [CLI服务](#cli服务)
+- [约定](#约定)
+  - [首页文件](#首页文件)
+  - [静态资源处理](#静态资源处理)
+  - [环境变量和模式](#环境变量和模式)
+- [配置](#配置)
   - [webpack](#webpack)
   - [browserslist](#browserslist)
-  - [Dev Server Proxy](#dev-server-proxy)
+  - [开发服务器代理](#开发服务器代理)
   - [Babel](#babel)
   - [CSS](#css)
   - [ESLint](#eslint)
   - [TypeScript](#typescript)
-  - [Unit Testing](#unit-testing)
-  - [E2E Testing](#e2e-testing)
-- [Development](#development)
+  - [单元测试](#单元测试)
+  - [E2E测试](#e2e测试)
 
-## Introduction
+## 简介
 
-Vue CLI is a full system for rapid Vue.js development, providing:
+Vue CLI是一个针对Vue.js快速开发的一个完整系统，提供：
 
-- Interactive project scaffolding via `@vue/cli`.
-- Zero config rapid prototyping via `@vue/cli` + `@vue/cli-service-global`.
-- A runtime dependency (`@vue/cli-service`) that is:
-  - Upgradeable;
-  - Built on top of webpack, with sensible defaults;
-  - Configurable via in-project config file;
-  - Extensible via plugins
-- A rich collection of official plugins integrating the best tools in the frontend ecosystem.
+- 交互性项目脚手架，通过`@vue/cli`。
+- 零配置快速原型，通过`@vue/cli`和`@vue/cli-service-global`。
+- 一个运行时依赖（`@vue/cli-service`）：
+  - 可升级；
+  - 以webpack为基础，有默认的合理配置；
+  - 通过项目内配置文件可配置；
+  - 通过插件可扩展
+- 集成了前端生态系统中的最好工具的丰富官方插件。
 
-Vue CLI aims to be the standard tooling baseline for the Vue ecosystem. It ensures the various build tools work smoothly together with sensible defaults so you can focus on writing your app instead of spending days wrangling with configurations. At the same time, it still offers the flexibility to tweak the config of each tool without the need for ejecting.
+Vue CLI旨在成为Vue生态系统的标准工具基准。它可以确保各种构建工具在合理的默认设置下可以顺利工作，已助于你可专注于编写你的应用，而不用花费大量时间在配置中挣扎。同时，也保证了调整各个工具配置的灵活性。
 
 ## CLI
 
-The CLI is installed globally and provides the `vue` command in your terminal:
+CLI被全局安装，并且在你的终端中提供`vue`命令：
 
 ``` sh
 npm install -g @vue/cli
 vue create my-project
 ```
 
-See [CLI docs](./cli.md) for all available commands.
+查看全部可用命令参阅[CLI文档](./cli.md)。
 
-## CLI Service
+## CLI服务
 
-`@vue/cli-service` is a dependency installed locally into every project created by `@vue/cli`. It contains the core service that loads other plugins, resolves the final webpack config, and provides the `vue-cli-service` binary to your project. If you are familiar with [create-react-app](https://github.com/facebookincubator/create-react-app), `@vue/cli-service` is essentially the equivalent of `react-scripts`, but more flexible.
+`@vue/cli-service`是在每个由`@vue/cli`创建的每格项目中本地安装的依赖项。它包含了加载其他插件的核心服务，为你的项目提供`vue-cli-service`二进制文件。如果你熟悉[create-react-app](https://github.com/facebookincubator/create-react-app)的话，`@vue/cli-service`本质上相当于`react-scripts`，但是更灵活。
 
-See [CLI Service docs](./cli-service.md) for all available commands.
+查看全部可用命令参阅[CLI服务文档](./cli-service.md)。
 
-## Conventions
+## 约定
 
-### The Index Page
+### 首页文件
 
-The file `public/index.html` is a template that will be processed with [html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin). During build, asset links will be injected automatically. In addition, Vue CLI also automatically injects resource hints (`preload/prefetch`), manifest/icon links (when PWA plugin is used) and inlines the webpack runtime / chunk manifest for optimal performance.
+*The Index Page*
 
-### Static Assets Handling
+`public/index.html`文件是一个会被[html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin)处理的模板。构建期间，资源文件链接会被自动插入此模板。此外，Vue ClI还会自动插入资源提示（`preload/prefetch`）,manifest/icon链接（使用PWA插件时），为了保证最佳性能还会内联webpack runtime/chunk manifest。
 
-Static assets can be handled in two different ways:
+### 静态资源处理
 
-- Imported in JavaScript or referenced in templates/CSS via relative paths. Such references will be handled by webpack.
+*Static Assets Handling*
 
-- Placed in the `public` directory and referenced via absolute paths. These assets will simply be copied and not go through webpack.
+静态资源文件可以使用两种不同的方式处理:
 
-See [Static Assets Handling](./assets.md) for more details.
+- 在JS中导入，或者通过相对路径在template/CSS部分引用。这样的引用会被webpack处理。
 
-### Environment Variables and Modes
+- 放在`public目录中，并通过绝对路径引用。这样使用的文件只会被复制过去，不会经过webpack处理。
 
-It is a common need to customize the app's behavior based on the target environment - for example, you may want the app to use different API endpoints or credentials during development / staging / production environments.
+查看更多细节参阅[静态资源处理](./assets.md)。
 
-Vue CLI has comprehensive support for specifying different environment variables using modes and `.env` files.
+### 环境变量和模式
 
-See [Environment Variables and Modes](./env.md) for more details.
+根据目标环境自定义应用行为是中普遍的需求。比如，你可能希望应用在开发/演示/生产环境下使用不同的API或凭证。
 
-## Configuration
+Vue CLI全面支持了指定不同的环境变量使用模式和`.env`。
 
-Projects created from `vue create` are ready to go out-of-the-box. The plugins are designed to work with one another so in most cases, all you need to do is pick the features you want during the interactive prompts.
+查看更多细节参阅[环境变量和模式](./env.md)。
 
-However, we also understand that it's impossible to cater to every possible need, and the need of a project may also change over time. Projects created by Vue CLI allows you to configure almost every aspect of the tooling without ever needing to eject.
+## 配置
+
+使用`vue create`创建的项目开箱即用。插件被设计为可以彼此协作，因此大多数情况下，你只需要在交互命令下选取你需要的功能即可。
+
+不过我们也明白迎合每一种可能的需求是不可能的，而且项目的需求也可能随时发生变化。由Vue CLI创建的项目也允许你配置工具的几乎所有方面。
 
 ### vue.config.js
 
-Many aspects of a Vue CLI project can be configured by placing a `vue.config.js` file at the root of your project. The file may already exist depending on the features you selected when creating the project.
+Vue CLI项目的许多方面都允许你通过在你项目的根目录下放置一个`vue.config.js`文件来配置。这个文件可能已有，这取决于你创建项目时的选择。
 
-`vue.config.js` should export an object, for example:
+`vue.config.js`应该导出一个对象，比如：
 
 ``` js
 // vue.config.js
@@ -94,71 +97,75 @@ module.exports = {
 }
 ```
 
-Check [here](./config.md) for full list of possible options.
+查看完整的可能的选项列表，参阅[这里](./config.md)。
 
 ### webpack
 
-Probably the most common configuration need is tweaking the internal webpack config. Vue CLI provides flexible ways to achieve that without ejecting.
+可能最常见的配置需要是调整webpack内部的配置。Vue CLI提供了灵活的方式来实现。
 
-See [here](./webpack.md) for full details.
+查看全部详情参阅[这里](./webpack.md)。
 
 ### browserslist
 
-You will notice a `browserslist` field in `package.json` specifying a range of browsers the project is targeting. This value will be used by `babel-preset-env` and `autoprefixer` to automatically determine the JavaScript polyfills and CSS vendor prefixes needed.
+你会注意到`package.json`中的`browserslist`字段，它指定了该项目目标的一系列浏览器。这个值会被`babel-preset-env`和`autoprefixer`用来确定所需的JavaScript polyfills和CSS浏览器前缀。
 
-See [here](https://github.com/ai/browserslist) for how to specify browser ranges.
+如何指定浏览器范围参阅[这里](https://github.com/ai/browserslist)。
 
-### Dev Server Proxy
+### 开发服务器代理
 
-If your frontend app and the backend API server are not running on the same host, you will need to proxy API requests to the API server during development. This is configurable via the `devServer.proxy` option in `vue.config.js`.
+*Dev Server Proxy*
 
-See [Configuring Proxy](./cli-service.md#configuring-proxy) for more details.
+如果你的前端应用和后端API服务不在同一主机上运行，你需要在开发阶段将API请求代理给API服务器。可以通过`vue.config.js`中的`devServer.proxy`选项配置。
+查看更多细节参阅[设置Proxy](./cli-service.md#configuring-proxy)。
 
 ### Babel
 
-Babel can be configured via `.babelrc` or the `babel` field in `package.json`.
+Babel可以通过`.babelrc`或`package.json`中的`babel`字段配置。
 
-All Vue CLI apps use `@vue/babel-preset-app`, which includes `babel-preset-env`, JSX support and optimized configuration for minimal bundle size overhead. See [its docs](https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/babel-preset-app) for details and preset options.
+所有的Vue CLI应用都使用`@vue/babel-preset-app`，它包括`babel-preset-env`，JSX支持和针对更小的包体积的优化配置。更多细节和预设置参阅[它的文文档](https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/babel-preset-app)。 
 
 ### CSS
 
-Vue CLI projects comes with support for [PostCSS](http://postcss.org/), [CSS Modules](https://github.com/css-modules/css-modules) and pre-processors including [Sass](https://sass-lang.com/), [Less](http://lesscss.org/) and [Stylus](http://stylus-lang.com/).
+Vue CLI项目支持[PostCSS](http://postcss.org/)，[CSS Modules](https://github.com/css-modules/css-modules)和包括[Sass](https://sass-lang.com/)，[Less](http://lesscss.org/)，[Stylus](http://stylus-lang.com/)在内的预处理器。
 
-See [here](./css.md) for more details on CSS related configurations.
+查看更多有关CSS的配置参阅[这里](./css.md)。
 
 ### ESLint
 
-ESLint can be configured via `.eslintrc` or `eslintConfig` field in `package.json`.
+ESLint可以通过`.eslintrc`文件或`package.json`文件中的`eslintConfig`字段配置。
 
-See [@vue/cli-plugin-eslint](https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint) for more details.
+查看更多细节参阅[@vue/cli-plugin-eslint](https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint)。
 
 ### TypeScript
 
-TypeScript can be configured via `tsconfig.json`.
+TypeScript可以通过`tsconfig.json`配置。
 
-See [@vue/cli-plugin-typescript](https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-typescript) for more details.
+查看更多细节参阅[@vue/cli-plugin-typescript](https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-typescript)。
 
-### Unit Testing
+### 单元测试
+
+*Unit Testing*
 
 - #### Jest
 
-  See [@vue/cli-plugin-unit-jest](https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-unit-jest) for more details.
+  查看更多细节参阅[@vue/cli-plugin-unit-jest](https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-unit-jest)。
 
-- #### Mocha (via `mocha-webpack`)
+- #### Mocha (通过`mocha-webpack`)
 
-  See [@vue/cli-plugin-unit-mocha](https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-unit-mocha) for more details.
+  查看更多细节参阅[@vue/cli-plugin-unit-mocha](https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-unit-mocha)。
 
-### E2E Testing
+### E2E测试
 
 - #### Cypress
 
-  See [@vue/cli-plugin-e2e-cypress](https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-e2e-cypress) for more details.
+  查看更多细节参阅[@vue/cli-plugin-e2e-cypress](https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-e2e-cypress)。
 
 - #### Nightwatch
 
-  See [@vue/cli-plugin-e2e-nightwatch](https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-e2e-nightwatch) for more details.
+  查看更多细节参阅[@vue/cli-plugin-e2e-nightwatch](https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-e2e-nightwatch)。
 
-## Development
+<!-- ## Development
 
 - [Contributing Guide](https://github.com/vuejs/vue-cli/blob/dev/.github/CONTRIBUTING.md)
-- [Plugin Development Guide](https://github.com/vuejs/vue-cli/blob/dev/docs/plugin-dev.md)
+- [Plugin Development Guide](https://github.com/vuejs/vue-cli/blob/dev/docs/plugin-dev.md) -->
+
