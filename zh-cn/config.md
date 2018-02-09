@@ -1,83 +1,82 @@
 ## `vue.config.js`
 
-Here are all the available options with default values (all optional):
+这是所有可用的带有默认值的选项（所有可选）：
 
 ``` js
 module.exports = {
-  // Project deployment base
-  // By default we assume your app will be deployed at the root of a domain,
-  // e.g. https://www.my-app.com/
-  // If your app is deployed at a sub-path, you will need to specify that
-  // sub-path here. For example, if your app is deployed at
-  // https://www.foobar.com/my-app/
-  // then change this to '/my-app/'
+  // 项目部署基础
+  // 默认情况下，我们假设你的应用将被部署在域的根目录下,
+  // 例如：https://www.my-app.com/
+  // 如果您的应用程序部署在子路径中，则需要在这指定子路径
+  // 例如：https://www.foobar.com/my-app/
+  // 需要将它改为'/my-app/'
   baseUrl: '/',
 
-  // where to output built files
+  // 输出构建的文件的地方
   outputDir: 'dist',
 
-  // whether to use eslint-loader for lint on save.
+  // 是否为保存的lint使用eslint-loader
   lintOnSave: false,
 
-  // use the full build with in-browser compiler?
+  // 是否使用带有浏览器编译的完整版本？
   // https://vuejs.org/v2/guide/installation.html#Runtime-Compiler-vs-Runtime-only
   compiler: false,
 
-  // tweak internal webpack configuration.
-  // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
+  // 调整内部webpack配置
+  // 查看 https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
   chainWebpack: () => {},
   configureWebpack: () => {},
 
-  // vue-loader options
+  // vue-loader配置
   // https://vue-loader.vuejs.org/en/options.html
   vueLoader: {},
 
-  // generate sourceMap for production build?
+  // 为生产构建生成sourceMap？
   productionSourceMap: true,
 
-  // CSS related options
+  // CSS相关设置
   css: {
-    // extract CSS in components into a single CSS file (only in production)
+    // 将组件中的CSS提取到一个CSS文件中（只在生产环境下）
     extract: true,
 
-    // enable CSS source maps?
+    // 启用CSS sourceMap？
     sourceMap: false,
 
-    // pass custom options to pre-processor loaders. e.g. to pass options to
+    // 将自定义选项传递给预处理器加载器，例如：将选项传给
     // sass-loader, use { sass: { ... } }
     loaderOptions: {},
 
-    // Enable CSS modules for all css / pre-processor files.
-    // This option does not affect *.vue files.
+    // 为所有css/预编译文件启用CSS modules？
+    // 不会影响到.vue文件
     modules: false
   },
 
-  // use thread-loader for babel & TS in production build
-  // enabled by default if the machine has more than 1 cores
+  // 在生产版本中使用babel＆TS的thread-loader
+  // 如果机器拥有多个核心，则默认启用
   parallel: require('os').cpus().length > 1,
 
-  // split vendors using autoDLLPlugin?
-  // can also be an explicit Array of dependencies to include in the DLL chunk.
-  // See https://github.com/vuejs/vue-cli/blob/dev/docs/cli-service.md#dll-mode
+  // 使用autoDLLPlugin拆分vendors？
+  // 也可以时包含在DLL块中的数组
+  // 参阅 https://github.com/vuejs/vue-cli/blob/dev/docs/cli-service.md#dll-mode
   dll: false,
 
-  // options for the PWA plugin.
-  // see https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa
+  // PWA plugin插件配置
+  // 参阅 https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa
   pwa: {},
 
-  // configure webpack-dev-server behavior
+  // 配置webpack-dev-server行为
   devServer: {
     open: process.platform === 'darwin',
     host: '0.0.0.0',
     port: 8080,
     https: false,
     hotOnly: false,
-    // See https://github.com/vuejs/vue-cli/blob/dev/docs/cli-service.md#configuring-proxy
+    // 参阅 https://github.com/vuejs/vue-cli/blob/dev/docs/cli-service.md#configuring-proxy
     proxy: null, // string | Object
     before: app => {}
   },
 
-  // options for 3rd party plugins
+  // 第三方插件的选项
   pluginOptions: {
     // ...
   }
