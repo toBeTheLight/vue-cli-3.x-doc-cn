@@ -1,20 +1,20 @@
-## CLI Service
+## CLI服务
 
-- [Using the Binary](#using-the-binary)
+- [使用binary](#使用binary)
 - [serve](#serve)
-  - [Configuring Proxy](#configuring-proxy)
+  - [配置Proxy](#配置Proxy)
 - [build](#build)
-  - [Caching and Parallel Mode](#caching-and-parallel-mode)
-  - [Building as Library or Web Component](#building-as-library-or-web-component)
-  - [DLL Mode](#dll-mode)
-- [inspect](#inspect)
-- [Checking All Available Commands](#checking-all-available-commands)
+  - [缓存和并行模式](#缓存和并行模式)
+  - [构建为库或Web组件](#构建为库或Web组件)
+  - [DLL模式](#DLL模式)
+- [检查](#检查)
+- [查看所有可用命令](#查看所有可用命令)
 
-### Using the Binary
+### 使用binary
 
-Inside a Vue CLI project, `@vue/cli-service` installs a binary named `vue-cli-service`. You can access the binary directly as `vue-cli-service` in npm scripts, or as `./node_modules/.bin/vue-cli-service` from the terminal.
+在Vue CLI项目中，`@vue/cli-service`会安装一个叫做 `vue-cli-service`的binary，你可以在npm脚本命令中直接访问这个binary，或者在终端中使用`./node_modules/.bin/vue-cli-service`。
 
-This is what you will see in the `package.json` of a project using the default preset:
+这就是使用预设默认设置时在项目的`package.json`中看到的内容：
 
 ``` json
 {
@@ -28,20 +28,20 @@ This is what you will see in the `package.json` of a project using the default p
 ### serve
 
 ```
-Usage: vue-cli-service serve [options]
+用法: vue-cli-service serve [options]
 
-Options:
+选项:
 
-  --open    open browser on server start
-  --mode    specify env mode (default: development)
-  --host    specify host (default: 0.0.0.0)
-  --port    specify port (default: 8080)
-  --https   use https (default: false)
+  --open    启动服务器打开浏览器
+  --mode    指定env模式（默认：development）
+  --host    指定域名（默认：0.0.0.0）
+  --port    指定端口（默认: 8080）
+  --https   使用https（默认：false）
 ```
 
-`vue-cli-service serve` starts a dev server based on [webpack-dev-server](https://github.com/webpack/webpack-dev-server). It comes with hot-module-replacement (HMR) out of the box.
+`vue-cli-service serve`启动一个基于[webpack-dev-server](https://github.com/webpack/webpack-dev-server)的开发服务。带有开箱即用的模块热替换（HMR）。
 
-You can configure the dev server's behavior using the `devServer` option in `vue.config.js`:
+你可以使用`vue.config.js`文件中的`devServer`选项配置开发服务器的行为：
 
 ``` js
 module.exports = {
@@ -59,11 +59,11 @@ module.exports = {
 }
 ```
 
-In addition to these default values, [all options for `webpack-dev-server`](https://webpack.js.org/configuration/dev-server/) are also supported.
+除了这些默认值，[`webpack-dev-server`的所有配置都支持](https://webpack.js.org/configuration/dev-server/)。
 
-#### Configuring Proxy
+#### 配置Proxy
 
-`devServer.proxy` can be a string pointing to the development API server:
+`devServer.proxy`可以是一个指向开发API服务器的字符串：
 
 ``` js
 module.exports = {
@@ -73,9 +73,9 @@ module.exports = {
 }
 ```
 
-This will tell the dev server to proxy any unknown requests (requests that did not match a static file) to `http://localhost:4000`.
+这会告知开发服务器代理所有未知的请求（不匹配静态文件的请求）到`http://localhost:4000`。
 
-If you want to have more control over the proxy behavior, you can also use an object with `path: options` pairs. Consult [http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware#proxycontext-config) for full options:
+如果你希望对代理行为有更多的控制权，你也可以使用带有`path: options`键值对的对象。查看所有配置参阅[http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware#proxycontext-config)：
 
 ``` js
 module.exports = {
@@ -96,32 +96,32 @@ module.exports = {
 ### build
 
 ```
-Usage: vue-cli-service build [options] [entry|pattern]
+用法: vue-cli-service build [options] [entry|pattern]
 
 Options:
 
-  --mode    specify env mode (default: production)
-  --dest    specify output directory (default: dist)
-  --target  app | lib | wc | wc-async (default: app)
-  --name    name for lib or web-component mode (default: "name" in package.json or entry filename)
+  --mode    指定env模式（默认: production）
+  --dest    指定输出文件夹（默认: dist）
+  --target  app | lib | wc | wc-async (默认: app)
+  --name    lib模式或web组件模式下的名字(默认: package.json中的"name"或入口文件名）
 ```
 
-`vue-cli-service build` produces a production-ready bundle in the `dist/` directory, with minification for JS/CSS/HTML and auto vendor chunk splitting for better caching. The chunk manifest is inlined into the HTML.
+`vue-cli-service build`在`dist/`目录下生成一个生产可用的包，包含JS/CSS/HTML压缩，优化缓存的vendor代码分割。manifest代码块会被内联到html中。
 
-#### Caching and Parallel Mode
+#### 缓存和并行模式
 
-- `cache-laoder` is enabled for Babel/TypeScript transpilation by default.
-- `thread-loader` will be enabled for Babel/TypeScript transpilation when the machine has more than 1 CPI cores.
+- 默认启动了Babel/TypeScript转义的`cache-laoder`。
+- 当有多个CPU内核时，将启用`thread-loader`进行Babel/TypeScript的转义。
 
-#### Building as Library or Web Components
+#### 构建为库或Web组件
 
-It is also possible to build any component(s) inside your project as a library or as web components. See [Build Targets](./build-targets.md) for more details.
+也可以将项目内的任何组件构建为库或Web组件。查看等多细节参阅[Build Targets](./build-targets.md)。
 
-#### DLL Mode
+#### DLL模式
 
-If your app has a large amount of dependency libraries, you can improve the build performance by opting into DLL mode. DLL mode builds your dependencies into a separate vendor bundle which will be reused on future builds as long as your dependencies did not change.
+如果你的应用程序具有大量的依赖库，则可以通过选择进入DLL模式来提高构建性能。DLL模式将你的依赖构建到一个单独的vender包中，只要你的依赖关系没有变，此包会在以后的构建中复用。
 
-To enable DLL mode, set the `dll` option in `vue.config.js` to `true`:
+要启用DLL模式，请将`vue.config.js`文件中的`dll`设置为`true`：
 
 ``` js
 // vue.config.js
@@ -130,9 +130,9 @@ module.exports = {
 }
 ```
 
-This by default builds **all the modules listed in the `dependencies` field in `package.json`** into the DLL bundle. It is important that you correctly list your dependencies, otherwise it may end up including unnecessary code.
+默认情况下，会将**`package.json`中`dependencies`字段中列出的所有模块**构建到DLL包中。 正确列出你的依赖是非常重要的，否则它可能会包含不必要的代码。
 
-If you wish to have finer grained control over what modules to be included in the DLL bundle, you can also provide an Array of modules to the `dll` option:
+如果你希望更好地控制在DLL包中包含的模块，还可以为`dll`选项提供一个模块数组：
 
 ``` js
 // vue.config.js
@@ -144,27 +144,27 @@ module.exports = {
 }
 ```
 
-### inspect
+### 检查
 
 ```
-Usage: vue-cli-service inspect [options] [...paths]
+用法： vue-cli-service inspect [options] [...paths]
 
-Options:
+选项：
 
-  --mode    specify env mode (default: development)
+  --mode    指定env模式（默认：development）
 ```
 
-You can use `vue-cli-service inspect` to inspect the webpack config inside a Vue CLI project. See [Inspecting Webpack Config](./webpack.md#inspecting-the-projects-webpack-config) for more details.
+你可以使用`vue-cli-service inspect`检查Vue CLI项目中的webpack设置。查看更多细节参阅[Inspecting Webpack Config](./webpack.md#inspecting-the-projects-webpack-config)。
 
-### Checking All Available Commands
+### 查看所有可用命令
 
-Some CLI plugins  will inject additional commands to `vue-cli-service`. For example, `@vue/cli-plugin-eslint` injects the `vue-cli-service lint` command. You can see all injected commands by running:
+一些CLI插件会向`vue-cli-service`注入额外的命令。比如，`@vue/cli-plugin-eslint`会插入`vue-cli-service lint`命令。你可以运行下面的指令来查看所有添加的命令：
 
 ``` sh
 ./node_modules/.bin/vue-cli-service help
 ```
 
-You can also learn about the available options of each command with:
+你还可以通过下面的方式了解每个命令的可用选项：
 
 ``` sh
 ./node_modules/.bin/vue-cli-service help [command]
