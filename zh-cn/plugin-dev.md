@@ -1,6 +1,6 @@
-# Plugin Development Guide
+# 插件开发指南
 
-## Core Concepts
+## 核心概念
 
 - [Creator](#creator)
 - [Service](#service)
@@ -9,76 +9,75 @@
 - [Generator](#generator)
 - [Prompts](#prompts)
 
-There are two major parts of the system:
+该系统主要有两部分：
 
-- `@vue/cli`: globally installed, exposes the `vue create <app>` command;
-- `@vue/cli-service`: locally installed, exposes the `vue-cli-service` commands.
+- `@vue/cli`：全局安装，暴露`vue create <app>`命令；
+- `@vue/cli-service`：本地安装，暴漏`vue-cli-service`命令。
 
-Both utilize a plugin-based architecture.
+两者都使用基于插件的体系。
 
 ### Creator
 
-[Creator][creator-class] is the class created when invoking `vue create <app>`. Responsible for prompting for preferences, invoking generators and installing dependencies.
+[Creator][creator-class]是调用`vue create <app>`时创建的类。负责提示偏好，调用生成器和安装依赖。
 
 ### Service
 
-[Service][service-class] is the class created when invoking `vue-cli-service <command> [...args]`. Responsible for managing the internal webpack configuration, and exposes commands for serving and building the project.
+[Service][service-class]是调用`vue-cli-service <command> [...args]`时创建的类。负责管理内部的webpack配置，公开服务命令，构建项目。
 
-### CLI Plugin
+### CLI插件
 
-A CLI plugin is an npm package that can add additional features to a `@vue/cli` project. It should always contain a [Service Plugin](#service-plugin) as its main export, and can optionally contain a [Generator](#generator) and a [Prompt File](#prompts-for-3rd-party-plugins).
+CLI插件是一个可以将功能特性添加到`@vue/cli`项目的npm包。他应该总是包含一个[Service插件](#service-plugin)作为主要导出内容，并可以包含一个[Generator](#generator)一个[Prompt文件](#prompts-for-3rd-party-plugins)。
 
-A typical CLI plugin's folder structure looks like the following:
+典型的CLI插件的文件夹结构如下所示：
 
 ```
 .
 ├── README.md
-├── generator.js  # generator (optional)
-├── prompts.js    # prompts file (optional)
+├── generator.js  # generator （可选）
+├── prompts.js    # prompts file （可选）
 ├── index.js      # service plugin
 └── package.json
 ```
 
-### Service Plugin
+### Service插件
 
-Service plugins are loaded automatically when a Service instance is created - i.e. every time the `vue-cli-service` command is invoked inside a project.
+Service插件在每次创建服务实例时自动加载 - 即，每次在项目中调用`vue-cli-service`命令时。
 
-Note the concept of a "service plugin" we are discussing here is narrower than that of a "CLI plugin", which is published as an npm package. The former only refers to a module that will be loaded by `@vue/cli-service` when it's initialized, and is usually a part of the latter.
+注意，我们这里谈论的“service插件”的概念比作为npm包发布的“CLI插件”的概念更窄。“service插件”只是指在初始化时由`@vue/cli-service`加载的模块，通常是“CLI插件”的一部分。
 
-In addition, `@vue/cli-service`'s [built-in commands][commands] and [config modules][config] are also all implemented as service plugins.
+另外，`@vue/cli-service`'的[内建命令][commands]和[配置模块][config]也都作为service插件来实现。
 
-A service plugin should export a function which receives two arguments:
+Service插件应该导出一个接受两个参数的函数：
 
-- A [PluginAPI][plugin-api] instance
+- [插件API][plugin-api]实例
 
-- An object containing project local options specified in `vue.config.js`, or in the `"vue-cli"` field in `package.json`.
-
-The API allows service plugins to extend/modify the internal webpack config for different environments and inject additional commands to `vue-cli-service`. Example:
+- 包含`vue.config.js`中指定的项目本地选项或`package.json`文件中的``vue-cli'“字段的对象。
+例如：
 
 ``` js
 module.exports = (api, projectOptions) => {
   api.chainWebpack(webpackConfig => {
-    // modify webpack config with webpack-chain
+    // webpack-chain修改webpack配置
   })
 
   api.configureWepback(webpackConfig => {
-    // modify webpack config
-    // or return object to be merged with webpack-merge
+    // 修改webpack配置
+    // 会返回一个会被webpack-merge合并的对象
   })
 
   api.regsiterCommand('test', args => {
-    // register `vue-cli-service test`
+    // 注册`vue-cli-service test`
   })
 }
 ```
 
-#### Environment Variables in Service Plugins
+#### Service插件中的环境变量
 
-An important thing to note about env variables is knowing when they are resolved. Typically, a command like `vue-cli-service serve` or `vue-cli-service build` will always call `api.setMode()` as the first thing it does. However, this also means those env variables may not yet be available when a service plugin is invoked:
+关于环境变量的一个重要的事情是得知他们什么时候被解析了。通常，像`vue-cli-service serve`或`vue-cli-service build`这样的命令总是头等调用`api.setMode()`。然而，这也意味着当一个service插件被调用时，这些环境变量可能还不能用：
 
 ``` js
 module.exports = api => {
-  process.env.NODE_ENV // may not be resolved yet
+  process.env.NODE_ENV // 可能还没被解析
 
   api.regsiterCommand('build', () => {
     api.setMode('production')
@@ -86,7 +85,7 @@ module.exports = api => {
 }
 ```
 
-Instead, it's safer to rely on env variables in `configureWebpack` or `chainWebpack` functions, which are called lazily only when `api.resolveWebpackConfig()` is finally called:
+相反，在`configureWebpack`或`chainWebpack`函数中依赖环境变量是比较安全的，只有当最后调用`api.resolveWebpackConfig()`时，才会被懒加载：
 
 ``` js
 module.exports = api => {
@@ -98,23 +97,23 @@ module.exports = api => {
 }
 ```
 
-#### Resolving Webpack Config in Plugins
+#### 在插件中解析webpack配置
 
-A plugin can retrieve the resolved webpack config by calling `api.resolveWebpackConfig()`. Every call generates a fresh webpack config which can be further mutated as needed:
+插件可通过调用`api.resolveWebpackConfig()`来取得已解析的webpack配置。每次调用生成一个新的webpack配置，可根据需要进一步突变：
 
 ``` js
 api.regsiterCommand('my-build', args => {
-  // make sure to set mode and load env variables
+  // 确保设置了模式并且记载环境变量
   api.setMode('production')
 
   const configA = api.resolveWebpackConfig()
   const configB = api.resolveWebpackConfig()
 
-  // mutate configA and configB for different purposes...
+  // 为不同目的改变configA和configB
 })
 ```
 
-Alternatively, a plugin can also obtain a fresh [chainable config](https://github.com/mozilla-neutrino/webpack-chain) by calling `api.resolveChainableWebpackConfig()`:
+或者，插件也可以通过调用`api.resolveChainableWebpackConfig()`获得一个新的[链式性配置](https://github.com/mozilla-neutrino/webpack-chain)：
 
 ``` js
 api.regsiterCommand('my-build', args => {
@@ -123,16 +122,16 @@ api.regsiterCommand('my-build', args => {
   const configA = api.resolveChainableWebpackConfig()
   const configB = api.resolveChainableWebpackConfig()
 
-  // chain-modify configA and configB for different purposes...
+  // 链式修改configA和configB
 
   const finalConfigA = configA.toConfig()
   const finalConfigB = configB.toConfig()
 })
 ```
 
-#### Custom Options for 3rd Party Plugins
+#### 第三方插件的自定义选项
 
-The exports from `vue.config.js` will be [validated against a schema](https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-service/lib/options.js#L3) to avoid typos and wrong config values. However, a 3rd party plugin can still allow the user to configure its behavior via the `pluginOptions` field. For example, with the following `vue.config.js`:
+`vue.config.js`的导出将会[根据schema验证](https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-service/lib/options.js#L3)以避免错误拼写和错误的配置。但是，第三方插件依然可以允许用户通过`pluginOptions`字段配置其行为。例如，使用如下`vue.config.js`：
 
 ``` js
 module.exports = {
@@ -142,23 +141,25 @@ module.exports = {
 }
 ```
 
-The 3rd party plugin can read `projectOptions.pluginOptions.foo` to determine conditional configurations.
+第三方插件可以读取`projectOptions.pluginOptions.foo`来确定条件配置。
 
-### Generator
+### 生成器
 
-A CLI plugin published as a package can contain a `generator.js` or `generator/index.js` file. The generator inside a plugin will be invoked in two possible scenarios:
+*Generator*
 
-- During a project's initial creation, if the CLI plugin is installed as part of the project creation preset.
+作为包发布的CLI插件包括一个`generator.js`或`generator/index.js` 文件。插件中的生成器会在两种情况下被调用：
 
-- When the plugin is installed after project's creation and invoked individually via `vue invoke`.
+- 项目创建期间，如果CLI插件作为项目预设的一部分进行安装时
 
-The [GeneratorAPI][generator-api] allows a generator to inject additional dependencies or fields into `package.json` and add files to the project.
+- 项目创建之后，安装并通过`vue invoke`单独调用时
 
-A generator should export a function which receives three arguments:
+[生成器API][generator-api]允许生成器将其他依赖项或字段添加到`package.json`文件，并向项目中添加文件。
 
-1. A `GeneratorAPI` instance;
+生成器应该导出一个接受三个参数的函数：
 
-2. The generator options for this plugin. These options are resolved during the prompt phase of project creation, or loaded from a saved preset in `~/.vuerc`. For example, if the saved `~/.vuerc` looks like this:
+1. `生成器API`实例;
+
+2. 这个插件的生成器配置。这些配置在项目创建的提示阶段被解析，或者从`~/.vuerc`保存的预设至中。例如，如果保存的`~/.vuerc`看起来像这样：
 
     ``` json
     {
@@ -172,59 +173,60 @@ A generator should export a function which receives three arguments:
     }
     ```
 
-    And if the user creates a project using the `foo` preset, then the generator of `@vue/cli-plugin-foo` will receive `{ option: 'bar' }` as its second argument.
+    如果用户使用`foo`预设创建一个项目，那么`@vue/cli-plugin-foo`的生成器将接受`{ option: 'bar' }`作为它的第二个参数。
 
-    For a 3rd party plugin, the options will be resolved from the prompts or command line arguments when the user executes `vue invoke` (see [Prompts for 3rd Party Plugins](#prompts-for-3rd-party-plugins)).
+    对于第三方插件，配置会在用户执行`vue invoke`命令时从提示或者命令行解析(查看[第三方插件提示](#第三方插件提示))。
 
-3. The entire preset (`presets.foo`) will be passed as the third argument.
+3. 整个预设（`presets.foo`）会作为第三个参数。
 
-**Example:**
+**示例：**
 
 ``` js
 module.exports = (api, options, rootOptions) => {
-  // modify package.json fields
+  // 修改package.json字段
   api.extendPackage({
     scripts: {
       test: 'vue-cli-service test'
     }
   })
 
-  // copy and render all files in ./template with ejs
+  // 使用ejs复制和渲染./template中的所有文件
   api.render('./template')
 
   if (options.foo) {
-    // conditionally generate files
+    // 有条件的生成文件
   }
 }
 ```
 
-### Prompts
+### 提示
 
-#### Prompts for Built-in Plugins
+*Prompts*
 
-Only built-in plugins have the ability to customize the initial prompts when creating a new project, and the prompt modules are located [inside the `@vue/cli` package][prompt-modules].
+#### 内建插件的提示
 
-A prompt module should export a function that receives a [PromptModuleAPI][prompt-api] instance. The prompts are presented using [inquirer](https://github.com/SBoudrias/Inquirer.js) under the hood:
+只有内建插件能够在创建新项目时自定义初始提示，提示模块位于[`@vue/cli`包内][prompt-modules]。
+
+提示模块应该导出一个函数接受[提示模块API][prompt-api]实例。提示使用[询问者（inquirer）](https://github.com/SBoudrias/Inquirer.js)进行显示：
 
 ``` js
 module.exports = api => {
-  // a feature object should be a valid inquirer choice object
+  // injectFeature应该是有效的查询者选择对象
   cli.injectFeature({
     name: 'Some great feature',
     value: 'my-feature'
   })
 
-  // injectPrompt expects a valid inquirer prompt object
+  // injectPrompt需要一个有效的查询者提示对象
   cli.injectPrompt({
     name: 'someFlag',
-    // make sure your prompt only shows up if user has picked your feature
+    // 确保你的提示只在用户选了你的特性功能时显示
     when: answers => answers.features.include('my-feature'),
     message: 'Do you want to turn on flag foo?',
     type: 'confirm'
   })
 
-  // when all prompts are done, inject your plugin into the options that
-  // will be passed on to Generators
+  // 当完成所有提示之后，将你的插件注入到将会被传到生成器的选项中
   cli.onPromptComplete((answers, options) => {
     if (answers.features.includes('my-feature')) {
       options.plugins['vue-cli-plugin-my-feature'] = {
@@ -235,25 +237,25 @@ module.exports = api => {
 }
 ```
 
-#### Prompts for 3rd Party Plugins
+#### 第三方插件提示
 
-3rd party plugins are typically installed manually after a project is already created, and the user will initialize the plugin by calling `vue invoke`. If the plugin contains a `prompts.js` in its root directory, it will be used during invocation. The file should export an array of [Questions](https://github.com/SBoudrias/Inquirer.js#question) that will be handled by Inquirer.js. The resolved answers object will be passed to the plugin's generator as options.
+第三方插件通常在创建项目后手动安装，用户将通过调用“vue invoke”来初始化插件。如果插件的根目录中包含一个`prompts.js`，在调用过程中它将被使用。这个文件需要导出一个由`Inquirer.js`处理的[问题](https://github.com/SBoudrias/Inquirer.js#question)数组。解析的答案对象将会作为选项配置被传给插件的生成器。
 
-Alternatively, the user can skip the prompts and directly initialize the plugin by passing options via the command line, e.g.:
+或者用户可以跳过提示，并通过命令行传递选项直接初始化插件，像这样：
 
 ``` sh
 vue invoke my-plugin --mode awesome
 ```
 
-## Note on Development of Core Plugins
+## 关于核心插件开发的注意事项
 
-> This section only applies if you are working on a built-in plugin inside this very repository.
+> 本节只适用于你在这个库内研究内建插件时。
 
-A plugin with a generator that injects additional dependencies other than packages in this repo (e.g. `chai` is injected by `@vue/cli-plugin-unit-mocha/generator/index.js`) should have those dependencies listed in its own `devDependencies` field. This ensures that:
+注入在这个库(例如，`chai`被`@vue/cli-plugin-unit-mocha/generator/index.js`注入)之外的额外依赖的带有生成起的插件需要在自己的的`devDependencies`字段列出那些依赖。这确保了：
 
-1. the package always exist in this repo's root `node_modules` so that we don't have to reinstall them on every test.
+1. 包总是在这个库的根`node_modules`存在，可确保我们不需要在每次测试时都重新安装它。
 
-2. `yarn.lock` stays consistent so that CI can better use it for inferring caching behavior.
+2. `yarn.lock`保持一致，以便于CLI可以更好的用它来推断缓存行为。
 
 [creator-class]: https://github.com/vuejs/vue-cli/tree/dev/packages/@vue/cli/lib/Creator.js
 [service-class]: https://github.com/vuejs/vue-cli/tree/dev/packages/@vue/cli-service/lib/Service.js
