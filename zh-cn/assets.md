@@ -7,55 +7,56 @@
 
 ### Relative Path Imports
 
-When you reference a static asset using relative path inside JavaScript, CSS or `*.vue` files, the asset will be included into webpack's dependency graph. During this compilation process, all asset URLs such as `<img src="...">`, `background: url(...)` and CSS `@import` are **resolved as module dependencies**.
+当你用相对路径在JavaScript，CSS或`*.vue`文件中引用静态资源时，资源会被包含在webpack的依赖统计中。在这个编译过程中，所有的资源URL如`<img src="...">`，`background: url(...)`和CSS中的`@import`都会被**解析为模块依赖**。
 
-For example, `url(./image.png)` will be translated into `require('./image.png')`, and
+例如：`url(./image.png)`将会被编译为`require('./image.png')`。    
+例如：
 
 ``` html
 <img src="../image.png">
 ```
 
-will be compiled into:
+将会被编译为：
 
 ``` js
 createElement('img', { attrs: { src: require('../image.png') }})
 ```
 
-Internally, we use `file-loader` to determine the final file location with version hashes and correct public base paths, and use `url-loader` to conditionally inline assets that are smaller than 10kb, reducing the amount of HTTP requests.
+内部使用`file-loader`通过版本哈希值和正确的公共基本路径（public base paths）来确定最终文件的位置，使用`url-loader`来有条件的内敛小于10kb的资源，来减少HTTP请求。
 
-#### URL Transform Rules
+#### URL转换规则
 
-- If the URL is an absolute path (e.g. `/images/foo.png`), it will be preserved as-is.
+- 如果URL是一个绝对路径（如，`/images/foo.png`）将会保持原状。
 
-- If the URL starts with `.`, it's interpreted as a relative module request and resolved based on the folder structure on your file system.
+- 如果URL以`.`开始，它将会被理解为相对模块请求，并根据文件系统上的文件夹结构被解析。
 
-- If the URL starts with `~`, anything after it is interpreted as a module request. This means you can even reference assets inside node modules:
+- 如果URL以`~`开头，则后面的任何内容都会被理解为模块请求，这意味着你甚至可以引用在node modules的资源：
 
   ``` html
   <img src="~/some-npm-package/foo.png">
   ```
 
-- If the URL starts with `@`, it's also interpreted as a module request. This is useful because Vue CLI by default aliases `@` to `<projectRoot>/src`.
+- 如果URL以`@`开始，也会被理解为一个模块请求。因为Vue CLI默认将`@`作为`<projectRoot>/src`的别名（webpack alias）。
 
-### The `public` Folder
+### `public`文件夹
 
-Any static assets placed in the `public` folder will simply be copied and not go through webpack. You need to reference to them using absolute paths.
+所有放在`public`文件夹中的静态资源都会被简单的复制到打包文件路径中，而不会经过webpack解析，你需要使用绝对路径来引用它们。
 
-Note we recommended importing assets as part of your module dependency graph so that they will go through webpack with the following benefits:
+注意，我们建议将资源作为模块依赖的一部分导入，以便于能通过webpack解析来获得以下好处:
 
-- Scripts and stylesheets get minified and bundled together to avoid extra network requests.
-- Missing files cause compilation errors instead of 404 errors for your users.
-- Result filenames include content hashes so you don’t need to worry about browsers caching their old versions.
+- Scripts和stylesheets会压缩合并以减少额外的网络请求。
+- 缺少文件不会出现404错误，而在编译时就会报错。
+- 输出文件名包含内容哈希值，你不用担心浏览器会缓存旧版本。
 
-The `public` directory is provided as an **escape hatch**, and when you reference it via absolute path, you need to take into account where your app will be deployed. If your app is not deployed at the root of a domain, you will need to prefix your URLs with the base path:
+`public`文件是作为**逃生出口**用的，当你通过绝对路径引用它时，你需要考虑下应用程序会被部署到哪。如果你的应用被部署到域名的根目录下，你需要为你的地址加上基本路径（base path）:
 
-- In `public/index.html`, you need to prefix the link with `<%= webpackConfig.output.publicPath %>`:
+- 在`public/index.html`文件中，你需要在地址链接前加上`<%= webpackConfig.output.publicPath %>`：
 
   ``` html
   <link rel="shortcut icon" href="<%= webpackConfig.output.publicPath %>favicon.ico">
   ```
 
-- In templates, you will need to first pass the base URL to your component:
+- 在templates中你需要项将基本路径传给你的组件：
 
   ``` js
   data () {
@@ -65,14 +66,14 @@ The `public` directory is provided as an **escape hatch**, and when you referenc
   }
   ```
 
-  Then:
+  然后：
 
   ``` html
   <img :src="`${baseUrl}my-image.png`">
   ```
 
-#### When to use the `public` folder
+#### 什么时候使用`public`文件夹
 
-- You need a file with a specific name in the build output.
-- You have thousands of images and need to dynamically reference their paths.
-- Some library may be incompatible with Webpack and you have no other option but to include it as a `<script>` tag.
+- 你需要在构建输出中具有特殊名称的文件。
+- 你有很多很多很多的图片，需要动态的引用他们。
+- 有些库与webpack不兼容，除了使用`<script>`标签引用没有别的办法。
