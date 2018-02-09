@@ -1,54 +1,54 @@
 ## CLI
 
-- [Installation](#installation)
-- [Usage](#usage)
-- [Creating a New Project](#creating-a-new-project)
-- [Zero-config Prototyping](#zero-config-prototyping)
-- [Installing Plugins in an Existing Project](#installing-plugins-in-an-existing-project)
-- [Inspecting the webpack Config](#inspecting-the-projects-webpack-config)
-- [Pulling 2.x Templates](#pulling-vue-cli2x-templates-legacy)
+- [安装](#安装)
+- [用法](#用法)
+- [创建一个新项目](#创建一个新项目)
+- [零配置原型](#零配置原型)
+- [在现有项目中安装插件](#在现有项目中安装插件)
+- [检查项目的Webpack配置](#检查项目的Webpack配置)
+- [拉取`vue-cli@2.x`模板（旧API）](#拉取`vue-cli@2.x`模板（旧API）)
 
-### Installation
+### 安装
 
 ``` sh
 npm install -g @vue/cli
 vue create my-project
 ```
 
-### Usage
+### 用法
 
 ```
-Usage: vue <command> [options]
+用法: vue <command> [options]
 
-Commands:
+命令:
 
-  create [options] <app-name>      create a new project powered by vue-cli-service
-  invoke <plugin> [pluginOptions]  invoke the generator of a plugin in an already created project
-  inspect [options] [paths...]     inspect the webpack config in a project with vue-cli-service
-  serve [options] [entry]          serve a .js or .vue file in development mode with zero config
-  build [options] [entry]          build a .js or .vue file in production mode with zero config
-  init <template> <app-name>       generate a project from a remote template (legacy API, requires @vue/cli-init)
+  create [options] <app-name>      创建一个由vue-cli-service支持的新项目
+  invoke <plugin> [pluginOptions]  调用已经创建的项目中插件的生成器
+  inspect [options] [paths...]     使用vue-cli-service检查项目中的webpack配置
+  serve [options] [entry]          在开发者模式下以零配置运行一个js或vue文件
+  build [options] [entry]          在生产模式下以零配置构建一个js或vue文件
+  init <template> <app-name>       从远程模板生成项目（旧api 需要@vue/cli-init）
 ```
 
-For each command, you can also use `vue <command> --help` to see more detailed usage.
+对于每个命令，还可以使用`vue <command> --help`来查看更详细的用法。
 
-### Creating a New Project
+### 创建一个新项目
 
 ```
-Usage: create [options] <app-name>
+用法： create [options] <app-name>
 
-create a new project powered by vue-cli-service
+创建一个由vue-cli-service支持的新项目
 
 
-Options:
+选项：
 
-  -p, --preset <presetName>       Skip prompts and use saved preset
-  -d, --default                   Skip prompts and use default preset
-  -i, --inlinePreset <json>       Skip prompts and use inline JSON string as preset
-  -m, --packageManager <command>  Use specified npm client when installing dependencies
-  -r, --registry <url>            Use specified npm registry when installing dependencies (only for npm)
-  -f, --force                     Overwrite target directory if it exists
-  -h, --help                      output usage information
+  -p, --preset <presetName>       跳过提示并使用保存的预设
+  -d, --default                   跳过提示并使用默认预设
+  -i, --inlinePreset <json>       跳过提示并使用内联的JSON字符串作为预设
+  -m, --packageManager <command>  安装依赖关系时使用指定的npm客户端
+  -r, --registry <url>            安装依赖时使用指定的npm源（只在npm下生效）
+  -f, --force                     覆盖目标目录，如果存在
+  -h, --help                      输出用法信息
 ```
 
 ``` sh
@@ -59,106 +59,105 @@ vue create my-project
   <img width="682px" src="https://raw.githubusercontent.com/vuejs/vue-cli/dev/docs/screenshot.png">
 </p>
 
-#### Presets
+#### 预设值
 
-After you've selected features, you can optionally save it as a preset so that you can reuse it for future projects. If you want to delete a saved preset, you can do that by editing `~/.vuerc`.
+在你选择完功能特性之后，可以选择将其保存为一份预设值以便将来可以复用。如果要删除保存的预设值，可以通过编辑`~/.vuerc`实现。
 
-### Zero-config Prototyping
+### 零配置原型
 
-You can rapidly prototype with just a single `*.vue` file with the `vue serve` and `vue build` commands, but they require an additional global addon to be installed first:
+你可以通过`vue serve`和`vue build`命令在只有一个`*.vue`文件的情况下开始一个原型，但是需要先安装一个额外的全局插件：
 
 ``` sh
 npm install -g @vue/cli-service-global
 ```
 
-The drawback of `vue serve` is that it relies on globally installed dependencies which may be inconsistent on different machines. Therefore this is only recommended for rapid prototyping.
+`vue serve`的缺点是它依赖于全局安装的依赖，在不同的机器上可能不同。所以，只建议在快速开始原型时使用。
 
 #### vue serve
 
 ```
-Usage: serve [options] [entry]
+用法： serve [options] [entry]
 
-serve a .js or .vue file in development mode with zero config
+零配置在开发模式下启动一个.js或.vue文件
 
+配置：
 
-Options:
-
-  -o, --open  Open browser
-  -h, --help  output usage information
+  -o, --open  打开浏览器
+  -h, --help  输出用法信息
 ```
 
-All you need is a `*.vue` file:
+你只需要一个`*.vue`文件：
 
 ``` sh
 echo '<template><h1>Hello!</h1></template>' > App.vue
 vue serve
 ```
 
-`vue serve` uses the same default setup (webpack, babel, postcss & eslint) as projects created by `vue create`. It automatically infers the entry file in the current directory - the entry can be one of `main.js`, `index.js`, `App.vue` or `app.vue`. You can also explicitly specify the entry file:
+`vue serve`使用和`vue create`创建的项目相同的默认设置（webpack, babel, postcss 和 eslint）。它自动推断当前目录下的入口文件 - 入口文件可以是`main.js`, `index.js`, `App.vue`或`app.vue`中的一个。你也可以指定入口文件：
 
 ``` sh
 vue serve MyComponent.vue
 ```
 
-If needed, you can also provide an `index.html`, `package.json`, install and use local dependencies, or even configure babel, postcss & eslint with corresponding config files.
+如果需要的话，你还可以提供一个`index.html`, `package.json`，安装使用本地依赖, 甚至使用对应的文件配置babel，postcss和eslint。
 
 #### vue build
 
 ```
-Usage: build [options] [entry]
+用法： build [options] [entry]
 
-build a .js or .vue file in production mode with zero config
+零配置在生产模式下构建一个.js或.vue文件
 
 
-Options:
+选项：
 
-  -t, --target <target>  Build target (app | lib | wc | wc-async, default: app)
-  -n, --name <name>      name for lib or web-component (default: entry filename)
-  -d, --dest <dir>       output directory (default: dist)
-  -h, --help             output usage information
+  -t, --target <target>  构建目标（app | lib | wc | wc-async, 默认: app）
+  -n, --name <name>      库或web组件的名字（默认：入口文件名）
+  -d, --dest <dir>       指定输出文件夹（默认: dist）
+  -h, --help             输出用法信息
 ```
 
-You can also build the target file into a production bundle for deployment with `vue build`:
+你也可以使用`vue build`将目标文件构建到生产包中进行部署：
 
 ``` sh
 vue build MyComponent.vue
 ```
 
-`vue build` also provides the ability to build the component as a library or a web component. See [Build Targets](./build-targets.md) for more details.
+`vue build`还提供了将组件构建为库或Web组件的功能。查看更多详情参阅[Build Targets](./build-targets.md)。
 
-### Installing Plugins in an Existing Project
+### 在现有项目中安装插件
 
-Each CLI plugin ships with a generator (which creates files) and a runtime plugin (which tweaks the core webpack config and injects commands). When you use `vue create` to create a new project, some plugins will be pre-installed for you based on your feature selection. In case you want to install a plugin into an already created project, simply install it first:
+每个CLI插件附带一个生成器（创建文件）和一个运行时插件（调整webpack核心配置并注入新命令）。当你使用`vue create`创建一个新项目时，根据你的特性选择，将会为你预先安装一些插件。 如果您想要将插件安装到已经创建的项目中，只需要先简单的安装它：
 
 ``` sh
 npm install -D @vue/cli-plugin-eslint
 ```
 
-Then you can invoke the plugin's generator so it generates files into your project:
+然后你可以调用插件的生成器，以使其在你的项目中生成文件：
 
 ``` sh
-# the @vue/cli-plugin- prefix can be omitted
+# @vue/cli-plugin- 前缀可以省略
 vue invoke eslint
 ```
 
-In addition, you can pass options to the plugin:
+另外，您可以将选项传递给插件：
 
 ``` sh
 vue invoke eslint --config airbnb --lintOn save
 ```
 
-It is recommended to commit your project's current state before running `vue invoke`, so that after file generation you can review the changes and revert if needed.
+建议在运行`vue invoke`前提交项目的当前状态，便于你查看文件更改，或在必要时恢复。
 
-### Inspecting the Project's Webpack Config
+### 检查项目的Webpack配置
 
-You can use `vue inspect` to inspect the webpack config inside a Vue CLI project. See [Inspecting Webpack Config](./webpack.md#inspecting-the-projects-webpack-config) for more details.
+你可以在Vue CLI项目中使用`vue inspect`查看webpack配置。查看更多详情参阅[Inspecting Webpack Config](./webpack.md#inspecting-the-projects-webpack-config)。
 
-### Pulling `vue-cli@2.x` Templates (Legacy)
+### 拉取`vue-cli@2.x`模板（旧API）
 
-`@vue/cli` uses the same `vue` binary, so it overwrites `vue-cli@2.x`. If you still need the legacy `vue init` functionality, you can install a global bridge:
+`@vue/cli`使用相同的`vue` binary，所以它被改写为`vue-cli@2.x`。如果你仍需要旧的`vue init`功能，你可以安装一个全局包：
 
 ``` sh
 npm install -g @vue/cli-init
-# vue init now works exactly the same as vue-cli@2.x
+# vue init现在和vue-cli@2.x一样
 vue init webpack my-project
 ```
