@@ -1,11 +1,11 @@
 ## Static Asset Handling
 
-- [Relative Path Imports](#relative-path-imports)
-  - [URL Transform Rules](#url-transform-rules)
-- [The `public` Folder](#the-public-folder)
-  - [When to use the `public` folder](#when-to-use-the-public-folder)
+- [相对路径导入](#相对路径导入)
+  - [URL转换规则](#URL转换规则)
+- [public文件夹](#public文件夹)
+  - [什么时候使用public文件夹](#什么时候使用public文件夹)
 
-### Relative Path Imports
+### 相对路径导入
 
 当你用相对路径在JavaScript，CSS或`*.vue`文件中引用静态资源时，资源会被包含在webpack的依赖统计中。在这个编译过程中，所有的资源URL如`<img src="...">`，`background: url(...)`和CSS中的`@import`都会被**解析为模块依赖**。
 
@@ -38,7 +38,7 @@ createElement('img', { attrs: { src: require('../image.png') }})
 
 - 如果URL以`@`开始，也会被理解为一个模块请求。因为Vue CLI默认将`@`作为`<projectRoot>/src`的别名（webpack alias）。
 
-### `public`文件夹
+### public文件夹
 
 所有放在`public`文件夹中的静态资源都会被简单的复制到打包文件路径中，而不会经过webpack解析，你需要使用绝对路径来引用它们。
 
@@ -72,7 +72,7 @@ createElement('img', { attrs: { src: require('../image.png') }})
   <img :src="`${baseUrl}my-image.png`">
   ```
 
-#### 什么时候使用`public`文件夹
+#### 什么时候使用public文件夹
 
 - 你需要在构建输出中具有特殊名称的文件。
 - 你有很多很多很多的图片，需要动态的引用他们。
