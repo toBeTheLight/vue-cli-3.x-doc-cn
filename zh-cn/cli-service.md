@@ -106,7 +106,7 @@ Options:
   --name    lib模式或web组件模式下的名字(默认: package.json中的"name"或入口文件名）
 ```
 
-`vue-cli-service build`在`dist/`目录下生成一个生产可用的包，包含JS/CSS/HTML压缩，优化缓存的vendor代码分割。manifest代码块会被内联到html中。
+`vue-cli-service build`在`dist/`目录下生成一个生产可用的bundle，包含JS/CSS/HTML压缩，优化缓存的vendor代码分割。manifest代码块会被内联到html中。
 
 #### 缓存和并行模式
 
@@ -119,7 +119,7 @@ Options:
 
 #### DLL模式
 
-如果你的应用程序具有大量的依赖库，则可以通过选择进入DLL模式来提高构建性能。DLL模式将你的依赖构建到一个单独的vender包中，只要你的依赖关系没有变，此包会在以后的构建中复用。
+如果你的应用程序具有大量的依赖库，则可以通过选择进入DLL模式来提高构建性能。DLL模式将你的依赖构建到一个单独的vendor bundle中，只要你的依赖关系没有变，此包会在以后的构建中复用。
 
 要启用DLL模式，请将`vue.config.js`文件中的`dll`设置为`true`：
 
@@ -130,9 +130,9 @@ module.exports = {
 }
 ```
 
-默认情况下，会将**`package.json`中`dependencies`字段中列出的所有模块**构建到DLL包中。 正确列出你的依赖是非常重要的，否则它可能会包含不必要的代码。
+默认情况下，会将**`package.json`中`dependencies`字段中列出的所有模块**构建到DLL bundle中。 正确列出你的依赖是非常重要的，否则它可能会包含不必要的代码。
 
-如果你希望更好地控制在DLL包中包含的模块，还可以为`dll`选项提供一个模块数组：
+如果你希望更好地控制在DLL bundle中包含的模块，还可以为`dll`选项提供一个模块数组：
 
 ``` js
 // vue.config.js

@@ -117,7 +117,7 @@ vue serve MyComponent.vue
   -h, --help             输出用法信息
 ```
 
-你也可以使用`vue build`将目标文件构建到生产包中进行部署：
+你也可以使用`vue build`将目标文件构建到生产bundle中进行部署：
 
 ``` sh
 vue build MyComponent.vue

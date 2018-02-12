@@ -122,7 +122,7 @@ module.exports = {
 
 Babel可以通过`.babelrc`或`package.json`中的`babel`字段配置。
 
-所有的Vue CLI应用都使用`@vue/babel-preset-app`，它包括`babel-preset-env`，JSX支持和针对更小的包体积的优化配置。更多细节和预设置参阅[它的文文档](https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/babel-preset-app)。 
+所有的Vue CLI应用都使用`@vue/babel-preset-app`，它包括`babel-preset-env`，JSX支持和针对更小的bundle体积的优化配置。更多细节和预设置参阅[它的文文档](https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/babel-preset-app)。 
 
 ### CSS
 

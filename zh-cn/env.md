@@ -39,7 +39,7 @@ VUE_APP_SECRET=secret
 
 ### 在客户端代码中使用环境变量
 
-只有以`VUE_APP_`开头的变量才会静态的嵌入到带有`webpack.DefinePlugin`的客户端代码中。你可以在应用程序中像这样使用它。
+只有以`VUE_APP_`开头的变量才会静态的嵌入到带有`webpack.DefinePlugin`的客户端代码bundle中。你可以在应用程序中像这样使用它。
 
 ``` js
 console.log(process.env.VUE_APP_SECRET)

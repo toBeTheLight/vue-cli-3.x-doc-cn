@@ -32,15 +32,15 @@ dist/myLib.css           0.33 kb                  0.23 kb
 
 lib构建输出：
 
-- `dist/myLib.common.js`： 通过打包器使用的CommonJS包（不幸的是，webpack还不支持包的ES模块化标准输出）
+- `dist/myLib.common.js`： 通过打包器使用的CommonJS bundle（不幸的是，webpack还不支持bundle的ES模块化标准输出）
 
-- `dist/myLib.umd.js`: 一个UMD格式的包，可直接在浏览器使用或通过AMD加载器加载
+- `dist/myLib.umd.js`: 一个UMD格式的bundle，可直接在浏览器使用或通过AMD加载器加载
 
 - `dist/myLib.umd.min.js`: UMD格式构建的压缩版本
 
 - `dist/myLib.css`: 提取出来的CSS样式文件（可通过在`vue.config.js`中设置`css: { extract: false }`强制内联）
 
-**在库模式下，Vue是被外部化设置的**这意味即使你导入了Vue，包也不会打包Vue。如果通过打包器使用此库，它将试图通过依赖关系加载Vue；否则会降级使用全局变量`Vue`。
+**在库模式下，Vue是被外部化设置的**这意味即使你导入了Vue，bundle也不会包含Vue。如果通过打包器使用此库，它将试图通过依赖关系加载Vue；否则会降级使用全局变量`Vue`。
 
 ### Web组件
 
@@ -56,7 +56,7 @@ vue-cli-service build --target wc --name my-element [entry]
 
 这将生成一个JavaScript文件（和他的压缩版本），其中包含所有内容。当script文件在页面中使用时，会使用`@vue/web-component-wrapper`注册包含目标Vue组件的`<my-element>`自定义元素。wrapper会自动代理prop属性，attr属性，事件和slots插槽。查看更多详情参阅[`@vue/web-component-wrapper`的文档](https://github.com/vuejs/vue-web-component-wrapper)。
 
-**注意，此包依赖与Vue页面全局可用**
+**注意，此bundle依赖与Vue页面全局可用**
 
 该模式允许组件的使用者将Vue作为普通的DOM元素使用：
 
@@ -70,7 +70,7 @@ vue-cli-service build --target wc --name my-element [entry]
 
 #### 捆绑打包多个web组件
 
-当构建web组件包时，你还可以使用匹配模式指定多个组件作为打包入口：
+当构建web组件bundle时，你还可以使用匹配模式指定多个组件作为打包入口：
 
 ```
 vue-cli-service build --target wc --name foo 'src/components/*.vue'
@@ -82,7 +82,7 @@ vue-cli-service build --target wc --name foo 'src/components/*.vue'
 
 > [兼容性](https://github.com/vuejs/vue-web-component-wrapper#compatibility)
 
-当指定捆绑打包多个web组件时，这个包会变得相当大，而且用户可能只用包里的部分组件。异步web组件模式下会生成一个代码拆分包，其中包含一个用于在所有组件间提供共享运行时的小的入口文件并且会提前注册所有的自定义元素。然后只有在页面上使用相应的自定义元素的实例时，才会按需获取组件的代码：
+当指定捆绑打包多个web组件时，这个bundle会变得相当大，而且用户可能只用bundle里的部分组件。异步web组件模式下会生成一个代码拆分bundle，其中包含一个用于在所有组件间提供共享运行时的小的入口文件并且会提前注册所有的自定义元素。然后只有在页面上使用相应的自定义元素的实例时，才会按需获取组件的代码：
 
 ```
 vue-cli-service build --target wc-async --name foo 'src/components/*.vue'
