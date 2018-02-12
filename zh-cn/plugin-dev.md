@@ -255,7 +255,7 @@ vue invoke my-plugin --mode awesome
 
 1. 包总是在这个库的根`node_modules`存在，可确保我们不需要在每次测试时都重新安装它。
 
-2. `yarn.lock`保持一致，以便于CLI可以更好的用它来推断缓存行为。
+2. `yarn.lock`保持一致，以便于CI（持续集成）可以更好的用它来推断缓存行为。
 
 [creator-class]: https://github.com/vuejs/vue-cli/tree/dev/packages/@vue/cli/lib/Creator.js
 [service-class]: https://github.com/vuejs/vue-cli/tree/dev/packages/@vue/cli-service/lib/Service.js
