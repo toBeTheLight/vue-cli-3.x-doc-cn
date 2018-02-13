@@ -1,6 +1,6 @@
 # vue-cli 3.x中文文档
 
-查看英文文档请去[官方库](https://github.com/vuejs/vue-cli)
+**本文档翻译与纠错会持续同步，但会滞后于官方文档，想要获得第一手的使用说明与新特性请查看[英文官方文档](https://github.com/vuejs/vue-cli)**
 
 ## 版本状态: alpha
 
