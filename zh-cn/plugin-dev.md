@@ -60,12 +60,12 @@ module.exports = (api, projectOptions) => {
     // webpack-chain修改webpack配置
   })
 
-  api.configureWepback(webpackConfig => {
+  api.configureWebpack(webpackConfig => {
     // 修改webpack配置
     // 会返回一个会被webpack-merge合并的对象
   })
 
-  api.regsiterCommand('test', args => {
+  api.registerCommand('test', args => {
     // 注册`vue-cli-service test`
   })
 }
@@ -79,7 +79,7 @@ module.exports = (api, projectOptions) => {
 module.exports = api => {
   process.env.NODE_ENV // 可能还没被解析
 
-  api.regsiterCommand('build', () => {
+  api.registerCommand('build', () => {
     api.setMode('production')
   })
 }
@@ -102,7 +102,7 @@ module.exports = api => {
 插件可通过调用`api.resolveWebpackConfig()`来取得已解析的webpack配置。每次调用生成一个新的webpack配置，可根据需要进一步突变：
 
 ``` js
-api.regsiterCommand('my-build', args => {
+api.registerCommand('my-build', args => {
   // 确保设置了模式并且记载环境变量
   api.setMode('production')
 
@@ -116,7 +116,7 @@ api.regsiterCommand('my-build', args => {
 或者，插件也可以通过调用`api.resolveChainableWebpackConfig()`获得一个新的[链式性配置](https://github.com/mozilla-neutrino/webpack-chain)：
 
 ``` js
-api.regsiterCommand('my-build', args => {
+api.registerCommand('my-build', args => {
   api.setMode('production')
 
   const configA = api.resolveChainableWebpackConfig()
