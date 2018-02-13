@@ -16,7 +16,9 @@ module.exports = {
   outputDir: 'dist',
 
   // 是否为保存的lint使用eslint-loader
-  lintOnSave: false,
+  // 可选值： true | false | 'error'
+  // 当设置为“error”时，lint错误会导致编译打包失败
+  lintOnSave: true,
 
   // 是否使用带有浏览器编译的完整版本？
   // https://vuejs.org/v2/guide/installation.html#Runtime-Compiler-vs-Runtime-only
