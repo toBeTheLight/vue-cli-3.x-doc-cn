@@ -51,7 +51,7 @@ Service插件应该导出一个接受两个参数的函数：
 
 - [插件API][plugin-api]实例
 
-- 包含`vue.config.js`中指定的项目本地选项或`package.json`文件中的``vue-cli'“字段的对象。
+- 包含`vue.config.js`中指定的项目本地选项或`package.json`文件中的`"vue"`字段的对象。
 例如：
 
 ``` js
